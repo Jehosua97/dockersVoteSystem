@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kafka Citizens Communication</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Kafka Citizens Communication</h1>
+        
+        <div class="control-panel">
+            <h2>Send Messages</h2>
+            <div class="sender">
+                <h3>Citizen 1</h3>
+                <input type="text" id="message1" placeholder="Enter message">
+                <button onclick="sendMessage(1)">Send</button>
+            </div>
+            <div class="sender">
+                <h3>Citizen 2</h3>
+                <input type="text" id="message2" placeholder="Enter message">
+                <button onclick="sendMessage(2)">Send</button>
+            </div>
+        </div>
+        
+        <div class="logs">
+            <h2>Communication Log</h2>
+            <div id="messageLog"></div>
+        </div>
+        
+        <div class="votes">
+            <h2>Votes Database</h2>
+            <div class="db-view">
+                <h3>Citizen 1 Votes</h3>
+                <div id="votes1"></div>
+            </div>
+            <div class="db-view">
+                <h3>Citizen 2 Votes</h3>
+                <div id="votes2"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

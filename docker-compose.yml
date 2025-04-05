@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    hostname: kafka
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "votes_topic:1:1"  # Crea el topic automáticamente
+      KAFKA_HEAP_OPTS: "-Xmx256M -Xms128M"
+
+  citizen1:
+    build: ./citizen1
+    ports:
+      - "5001:5000" 
+    container_name: citizen1
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - CITIZEN_ID=1
+      - DB_NAME=/data/votes.db
+    volumes:
+      - citizen1_data:/data
+
+  citizen2:
+    build: ./citizen2
+    ports:
+      - "5002:5000" 
+    container_name: citizen2
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - CITIZEN_ID=2
+      - DB_NAME=/data/votes.db
+    volumes:
+      - citizen2_data:/data
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "9000:80"
+    depends_on:
+      - citizen1
+      - citizen2
+
+volumes:
+  citizen1_data:
+  citizen2_data:
