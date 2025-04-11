@@ -1,7 +1,7 @@
 // URLs de los servicios (ajusta según tu configuración)
 const citizen1Url = 'http://10.173.8.113:5001';
 const citizen2Url = 'http://10.173.8.113:5002';
-const frontendUrl = 'http://10.173.8.113:9000';
+const frontendUrl = 'http://10.173.8.114:9000';
 
 // Función para enviar mensajes
 async function sendMessage(citizenId) {
