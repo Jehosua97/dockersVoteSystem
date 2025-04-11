@@ -59,6 +59,48 @@ services:
     volumes:
       - citizen2_data:/data
 
+  citizen3:
+    build: ./citizen3
+    ports:
+      - "5003:5000"
+    container_name: citizen3
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - CITIZEN_ID=3
+      - DB_NAME=/data/votes.db
+    volumes:
+      - citizen3_data:/data
+
+  citizen4:
+    build: ./citizen4
+    ports:
+      - "5004:5000"
+    container_name: citizen4
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - CITIZEN_ID=4
+      - DB_NAME=/data/votes.db
+    volumes:
+      - citizen4_data:/data
+
+  citizen5:
+    build: ./citizen5
+    ports:
+      - "5005:5000"
+    container_name: citizen5
+    depends_on:
+      - kafka
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - CITIZEN_ID=5
+      - DB_NAME=/data/votes.db
+    volumes:
+      - citizen5_data:/data
+
   frontend:
     build: ./frontend
     container_name: frontend
@@ -67,7 +109,13 @@ services:
     depends_on:
       - citizen1
       - citizen2
+      - citizen3
+      - citizen4
+      - citizen5
 
 volumes:
   citizen1_data:
   citizen2_data:
+  citizen3_data:
+  citizen4_data:
+  citizen5_data:
